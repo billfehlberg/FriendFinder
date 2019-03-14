@@ -1,25 +1,37 @@
 var friendData = require("../data/friends");
 
 
+module.exports = function (app) {
 
-module.exports = function(app) {
-
-  app.get("/friendfinder/api", function(req, res) {
+  app.get("/friendfinder/api", function (req, res) {
     res.json(friendData);
   });
 
+  app.post("/api/friends", function (req, res) {
 
-
-  app.post("/api/friends", function(req, res) {
-    // Note the code here. Our "server" will respond to requests and let users know if they have a table or not.
-    // It will do this by sending out the value "true" have a table
-    // req.body is available since we're using the body parsing middleware
     if (friendData.length >= 1) {
       friendData.push(req.body);
-      res.json(true);
+     var newfriendData = req.body;
+      var arrayScore = [];
+
+      for (var i = 0; i < friendData.length; i++) {
+        var totalDifference = 0;
+        for (var j = 0; j < 10; j++) {
+          totalDifference += Math.abs(friendData[i].scores[j] - newfriendData.scores[j]);
+          arrayScore.push(totalDifference);
+        }
+
+        var lowestDif = arrayScore[0];
+        for (var k = 1; k < arrayScore.length; k++) {
+          if (arrayScore[i] < lowestDif) {
+            lowestDif = arrayScore[k];
+            index = k;
+          }
+        }
+      }
     }
     else {
-        console.log("No friends");
+      console.log("Retake Survey");
     }
   });
 
@@ -27,10 +39,10 @@ module.exports = function(app) {
   // I added this below code so you could clear out the table while working with the functionality.
   // Don"t worry about it!
 
-  app.post("/api/clear", function(req, res) {
+  app.post("/api/clear", function (req, res) {
     // Empty out the arrays of data
     friendData.length = [];
-   
+
 
     res.json({ ok: true });
   });
