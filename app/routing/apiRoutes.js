@@ -11,8 +11,9 @@ module.exports = function (app) {
 
     if (friendData.length >= 1) {
       friendData.push(req.body);
-     var newfriendData = req.body;
+      var newfriendData = req.body;
       var arrayScore = [];
+
 
       for (var i = 0; i < friendData.length; i++) {
         var totalDifference = 0;
@@ -21,13 +22,16 @@ module.exports = function (app) {
           arrayScore.push(totalDifference);
         }
 
+        var index = 0;
         var lowestDif = arrayScore[0];
         for (var k = 1; k < arrayScore.length; k++) {
           if (arrayScore[i] < lowestDif) {
             lowestDif = arrayScore[k];
-            index = k;
+            index = [k];
           }
         }
+        var bestFriend = friendData[index];
+        res.json(bestFriend);
       }
     }
     else {

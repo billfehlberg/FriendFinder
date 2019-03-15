@@ -33,7 +33,7 @@
                 </div>
                 <div class="modal-body">
                     <h3 id="matchName"></h3>
-                    <a href="" id="matchPic"></a>
+                    <img id="matchPic" src="#"></a>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -189,6 +189,7 @@
 
 <script type="text/javascript">
 
+
         $("#submit").on("click", function (event) {
             event.preventDefault();
 
@@ -211,13 +212,15 @@
             console.log("test");
             console.log(newfriendData);
 
-    $.post("/api/friends", newfriendData,
-        function (data) {
+        $.post("/api/friends", newfriendData,
+            function (data) {
 
-
-            $('#matchName').push(friendData[index].name);
-            $("#matchPic").push(friendData[index].photo);
+            $('#matchName').text(data.name);
+            $("#matchPic").attr("src", data.matchPhoto);
             $("#bestMatchModal").modal("show");
+
+        });
+           
             $("#name").val("");
             $("#photo").val("");
             $("#question1").val("");
@@ -230,7 +233,6 @@
             $("#question8").val("");
             $("#question9").val("");
             $("#question10").val("");
-        });
     });
-console.log(friendData[index].name);
+
 </script>
